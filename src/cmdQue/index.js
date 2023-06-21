@@ -33,7 +33,6 @@ module.exports.add = async(type, job, jobId = null)=>{
 	try{
     let jobQue = type
     if(type?.includes('Private') && !WorkerQues[type]) jobQue = type?.replace('Private', '')
-		console.log(jobQue)
     if(!WorkerQues[jobQue]) return;
     const res = await WorkerQues[jobQue].newJob(job, {jobId: jobId || job.id})
     CheckJob(job, WorkerQues[jobQue])
