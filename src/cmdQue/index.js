@@ -38,6 +38,6 @@ module.exports.add = async(type, job, jobId = null)=>{
     CheckJob(job, WorkerQues[jobQue])
     return res
 	}catch(e){
-		console.log(e)
+		console.error(e)
 	}
 }
