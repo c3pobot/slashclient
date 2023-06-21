@@ -1,5 +1,5 @@
 'use strict'
-const { getJobType } = require('src/helpers')
+const { getJobType } = require(baseDir+'/src/helpers')
 const AddButtonJob = async(obj, jobId)=>{
   try{
     const type = await getJobType(obj)

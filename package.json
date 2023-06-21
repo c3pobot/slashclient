@@ -10,5 +10,14 @@
     "rediswrapper": "github:c3pobot/rediswrapper",
     "socketclient": "github:c3pobot/socketclient",
     "tweetnacl": "^1.0.3"
-  }
+  },
+  "name": "slashclient",
+  "version": "1.0.0",
+  "description": "http client for discord slash commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "scuba75",
+  "license": "ISC"
 }

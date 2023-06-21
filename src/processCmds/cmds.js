@@ -1,5 +1,5 @@
 'use strict'
-const { getIntialResponse } = require('src/helpers')
+const { getIntialResponse } = require(baseDir+'/src/helpers')
 module.exports = async(req)=>{
   try{
     return await getIntialResponse(req)

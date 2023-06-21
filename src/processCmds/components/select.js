@@ -1,5 +1,5 @@
 'use strict'
-const { getJobType } = require('src/helpers')
+const { getJobType } = require(baseDir+'/src/helpers')
 const AddJob = async(obj)=>{
   try{
     const type = await getJobType(obj)
@@ -11,7 +11,7 @@ const AddJob = async(obj)=>{
 }
 module.exports = async(req)=>{
   try{
-    if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return {type: 6}}
+    if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return {type: 6}
     const opt = JSON.parse(req.data?.custom_id)
     if(!opt?.id) return {type: 6, data: { content: 'Error with selection', components: []}}
     const tempObj = await redis.get('component-'+opt.id)

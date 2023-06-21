@@ -4,6 +4,7 @@ const RedisWrapper = require('rediswrapper')
 global.CmdMap = {}
 global.mongoReady = 0
 global.debugMsg = +process.env.DEBUG || 0
+global.MSG = require('discordapiwrapper')
 global.CmdQue = require('./cmdQue')
 global.redis = new RedisWrapper({
   host: process.env.REDIS_SERVER,
