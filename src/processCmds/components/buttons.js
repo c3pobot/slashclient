@@ -22,7 +22,7 @@ const miscCmds = ['pollvote']
 module.exports = async(req)=>{
   try{
     if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return {type: 6}
-    const opt = JSON.parse(req.body.data.custom_id)
+    const opt = JSON.parse(req.data.custom_id)
     if(!opt?.id) return {type: 6}
     if(opt?.type && miscCmds.filter(x=>x == opt?.type).length > 0){
       req.data.name = opt.type
@@ -31,8 +31,8 @@ module.exports = async(req)=>{
       let tempObj = await redis.get('button-'+opt.id)
       if(!tempObj) tempObj = await redis.get(opt.id)
       if(!tempObj?.member?.user?.id) return {type: 7, data: { content: 'Command timed out', components: []}}
-      if(tempObj.member.user.id == req.body.member.user.id){
-        tempObj.token = req.body.token
+      if(tempObj.member.user.id == req.member.user.id){
+        tempObj.token = req.token
         tempObj.confirm = opt
         await AddButtonJob(tempObj, req?.id)
       }

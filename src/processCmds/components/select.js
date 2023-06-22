@@ -18,7 +18,7 @@ module.exports = async(req)=>{
     if(!tempObj?.member?.user?.id) return {type: 7, data: { content: 'Command timed out', components: []}}
     if(tempObj.member.user.id == req.member.user.id){
       tempObj.token = req.token
-      tempObj.select = {opt: opt, data: req.body.data.values || []}
+      tempObj.select = {opt: opt, data: req.data.values || []}
       await AddJob(tempObj)
     }
     return {type: 6}
