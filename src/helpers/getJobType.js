@@ -21,7 +21,7 @@ module.exports = async(obj = {})=>{
     let type
     if(CmdMap[obj?.data?.name]) type = CmdMap[obj?.data?.name].worker
     if(!type) return
-    if(msgOpts?.private?.filter(x=>x == obj.guild_id).length > 0) type += 'Private'
+    if(msgOpts?.private?.filter(x=>x === obj.guild_id).length > 0) type += 'Private'
     return type
   }catch(e){
     console.error(e);
