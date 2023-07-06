@@ -1,5 +1,6 @@
 'use strict'
-const { getJobType } = require(baseDir+'/src/helpers')
+const { getJobType, redis } = require('helpers')
+const CmdQue = require('cmdQue')
 const AddJob = async(obj)=>{
   try{
     const type = await getJobType(obj)
@@ -23,6 +24,6 @@ module.exports = async(req)=>{
     }
     return {type: 6}
   }catch(e){
-    console.error(e)
+    throw(e)
   }
 }

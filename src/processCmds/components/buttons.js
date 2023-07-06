@@ -1,5 +1,6 @@
 'use strict'
-const { getJobType } = require(baseDir+'/src/helpers')
+const { getJobType, redis } = require('helpers')
+const CmdQue = require('cmdQue')
 const AddButtonJob = async(obj, jobId)=>{
   try{
     const type = await getJobType(obj)
@@ -7,7 +8,7 @@ const AddButtonJob = async(obj, jobId)=>{
     await redis.del('button-'+obj.id)
     if(type) await CmdQue.add(type, obj, jobId)
   }catch(e){
-    console.error(e)
+    throw(e)
   }
 }
 const AddMiscJob = async(obj, jobId)=>{
@@ -15,7 +16,7 @@ const AddMiscJob = async(obj, jobId)=>{
     const type = await getJobType(obj)
     if(type) CmdQue.add(type, obj, jobId)
   }catch(e){
-    console.error(e)
+    throw(e)
   }
 }
 const miscCmds = ['pollvote']
@@ -39,6 +40,6 @@ module.exports = async(req)=>{
     }
     return {type: 6}
   }catch(e){
-    console.error(e)
+    throw(e)
   }
 }

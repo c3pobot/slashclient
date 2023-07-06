@@ -1,5 +1,5 @@
 'use strict'
-let workerType = ['discord']
+let workerType = ['discord', 'oauth', 'swgoh']
 if(process.env.WORKER_TYPES) workerType = JSON.parse(process.env.WORKER_TYPES)
 const UpdateCmdMap = async(notify = false)=>{
   try{
@@ -11,7 +11,9 @@ const UpdateCmdMap = async(notify = false)=>{
     }
     if(Object.values(tempMap)?.length > 0){
       CmdMap = tempMap
-      if(notify) console.log('Saving map to CmdMap')
+      if(notify){
+        console.log('Saving map to CmdMap')
+      }
     }
   }catch(e){
     console.error(e);

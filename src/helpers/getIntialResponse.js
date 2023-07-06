@@ -1,4 +1,5 @@
 'use strict'
+const CmdQue = require('cmdQue')
 const getJobType = require('./getJobType')
 module.exports = async(req)=>{
   try{
@@ -14,6 +15,6 @@ module.exports = async(req)=>{
     }
     return({ type: 4,  data: { content: intialResponse } })
   }catch(e){
-    console.error(e);
+    throw(e);
   }
 }

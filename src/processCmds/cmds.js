@@ -1,9 +1,9 @@
 'use strict'
-const { getIntialResponse } = require(baseDir+'/src/helpers')
+const { getIntialResponse } = require('helpers')
 module.exports = async(req)=>{
   try{
     return await getIntialResponse(req)
   }catch(e){
-    console.error(e)
+    throw(e)
   }
 }

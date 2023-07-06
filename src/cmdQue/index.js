@@ -1,10 +1,10 @@
 'use strict'
 const QueWrapper = require('quewrapper')
 const CheckJob = require('./checkJob')
-let workerTypes = ['discord']
+let workerTypes = ['discord', 'oauth', 'swgoh']
 let WorkerQues = {}
 if(process.env.WORKER_TYPES) workerTypes = JSON.parse(process.env.WORKER_TYPES)
-const USE_PRIVATE = +(process.env.USE_PRIVATE_WORKERS || 0)
+const USE_PRIVATE = process.env.USE_PRIVATE_WORKERS || false
 const redisConnection = {
 	host: process.env.QUE_SERVER,
 	port: +process.env.QUE_PORT,
@@ -15,7 +15,7 @@ const CreateQue = async(queName)=>{
     console.log('Creating '+queName+' job que...')
     WorkerQues[queName] = new QueWrapper({queName: queName, queOptions: {redis: redisConnection}})
   }catch(e){
-    console.error(e);
+    throw(e);
   }
 }
 const CreateQues = async()=>{
@@ -26,6 +26,7 @@ const CreateQues = async()=>{
     }
   }catch(e){
     console.error(e);
+    setTimeout(CreateQues, 5000)
   }
 }
 module.exports.createQues = CreateQues
