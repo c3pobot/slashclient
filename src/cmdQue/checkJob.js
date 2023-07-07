@@ -1,4 +1,6 @@
 'use strict'
+const { webHookMsg } = require('helpers')
+
 const CheckJobStatus = async(obj = {}, que)=>{
   try{
     if(!que || !obj.token) return
@@ -12,7 +14,7 @@ const CheckJobStatus = async(obj = {}, que)=>{
     if(!jobStarted && jobs?.length > 0){
       let jobCount = +jobs.length - +jobIndex
       if(jobIndex == 0) jobCount = jobs.length
-      MSG.WebHookMsg(obj.token, { content: 'Your job is '+jobCount+' in the que' }, 'PATCH')
+      webHookMsg(obj.token, { content: 'Your job is '+jobCount+' in the que' }, 'PATCH')
       setTimeout(()=>CheckJobStatus(obj, que), 10000)
     }
   }catch(e){

@@ -8,4 +8,5 @@ Cmds.redis = RedisCmd.redis
 Cmds.redisStatus = RedisCmd.redisStatus
 Cmds.localQue = LocalQueCmd.localQue
 Cmds.localQueStatus = LocalQueCmd.localQueStatus
+Cmds.webHookMsg = require('./webHookMsg')
 module.exports = Cmds
