@@ -7,7 +7,7 @@ const AddJob = async(obj)=>{
     await redis.del('component-'+obj.id)
     if(type) CmdQue.add(type, obj)
   }catch(e){
-    console.log(e)
+    throw(e)
   }
 }
 module.exports = async(req)=>{

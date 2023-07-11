@@ -1,5 +1,6 @@
 'use strict'
-const { webHookMsg } = require('helpers')
+const log = require('logger')
+const { webHookMsg } = require('helpers/webHookMsg')
 
 const CheckJobStatus = async(obj = {}, que)=>{
   try{
@@ -18,7 +19,7 @@ const CheckJobStatus = async(obj = {}, que)=>{
       setTimeout(()=>CheckJobStatus(obj, que), 10000)
     }
   }catch(e){
-    console.error(e);
+    log.error(e);
   }
 }
 module.exports = CheckJobStatus

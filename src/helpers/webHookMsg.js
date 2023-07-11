@@ -30,7 +30,7 @@ const parseResponse = async(res)=>{
       headers: headers
     }
   }catch(e){
-    console.error(e);
+    throw(e);
   }
 }
 module.exports = async(token, msg, method = 'PATCH')=>{

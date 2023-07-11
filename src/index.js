@@ -1,4 +1,7 @@
 'use strict'
+const log = require('logger')
+let logLevel = process.env.LOG_LEVEL || log.Level.INFO;
+log.setLevel(logLevel);
 const { redisStatus, localQueStatus } = require('helpers')
 const { CmdMap } = require('./helpers/cmdMap')
 const CmdQue = require('./cmdQue')
@@ -11,7 +14,7 @@ const CheckRedis = async()=>{
       setTimeout(CheckRedis, 5000)
     }
   }catch(e){
-    console.error(e);
+    log.error(e);
     setTimeout(CheckRedis, 5000)
   }
 }
@@ -24,7 +27,7 @@ const CheckLocalQue = async()=>{
       setTimeout(CheckLocalQue, 5000)
     }
   }catch(e){
-    console.error(e);
+    log.error(e);
     setTimeout(CheckLocalQue, 5000)
   }
 }
@@ -36,7 +39,7 @@ const CheckCommandMap = ()=>{
     }
     setTimeout(CheckCommandMap, 5000)
   }catch(e){
-    console.error(e);
+    log.error(e);
     setTimeout(CheckCommandMap, 5000)
   }
 }
@@ -46,7 +49,7 @@ const StartServices = async()=>{
     require('./server')
   }catch(e){
     setTimeout(StartServices, 5000)
-    console.error(e)
+    log.error(e)
   }
 }
 

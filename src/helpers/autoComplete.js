@@ -1,4 +1,5 @@
 'use strict'
+const log = require('logger')
 const mongo = require('mongoapiclient')
 let autoCompleteData = {
   nameKeys: {},
@@ -32,7 +33,7 @@ const update = async()=>{
     await updateNameKeys()
     setTimeout(update, 30000)
   }catch(e){
-    console.error(e);
+    log.error(e);
     setTimeout(update, 5000)
   }
 }

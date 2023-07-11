@@ -1,4 +1,5 @@
 'use strict'
+const log = require('logger')
 const QueWrapper = require('quewrapper')
 const CheckJob = require('./checkJob')
 let workerTypes = ['discord', 'oauth', 'swgoh']
@@ -12,8 +13,8 @@ const redisConnection = {
 }
 const CreateQue = async(queName)=>{
   try{
-    console.log('Creating '+queName+' job que...')
-    WorkerQues[queName] = new QueWrapper({queName: queName, queOptions: {redis: redisConnection}})
+    log.log('Creating '+queName+' job que...')
+    WorkerQues[queName] = new QueWrapper({queName: queName, queOptions: {redis: redisConnection}, logger: log})
   }catch(e){
     throw(e);
   }
@@ -25,7 +26,7 @@ const CreateQues = async()=>{
       if(USE_PRIVATE) await CreateQue(workerTypes[i]+'Private')
     }
   }catch(e){
-    console.error(e);
+    log.error(e);
     setTimeout(CreateQues, 5000)
   }
 }
@@ -39,6 +40,6 @@ module.exports.add = async(type, job, jobId = null)=>{
     CheckJob(job, WorkerQues[jobQue])
     return res
 	}catch(e){
-		console.error(e)
+		throw(e)
 	}
 }
