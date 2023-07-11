@@ -1,4 +1,5 @@
 'use strict'
+const log = require('logger')
 const nacl = require('tweetnacl')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -50,5 +51,5 @@ const handleRequest = async(req, res)=>{
   }
 }
 const server = app.listen(PORT, ()=>{
-  console.log(POD_NAME+' is listening on '+server.address().port)
+  log.info(POD_NAME+' is listening on '+server.address().port)
 })
