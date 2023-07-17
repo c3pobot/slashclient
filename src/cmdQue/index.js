@@ -7,9 +7,9 @@ let WorkerQues = {}
 if(process.env.WORKER_TYPES) workerTypes = JSON.parse(process.env.WORKER_TYPES)
 const USE_PRIVATE = process.env.USE_PRIVATE_WORKERS || false
 const redisConnection = {
-	host: process.env.QUE_SERVER,
-	port: +process.env.QUE_PORT,
-  password: process.env.QUE_PASS
+	host: process.env.REDISSERVER,
+	port: +process.env.REDISPORT,
+  password: process.env.REDISPASS
 }
 const CreateQue = async(queName)=>{
   try{

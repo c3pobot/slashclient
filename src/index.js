@@ -9,26 +9,13 @@ const CheckRedis = async()=>{
   try{
     let status = redisStatus()
     if(status){
-      CheckLocalQue()
+      CheckCommandMap()
     }else{
       setTimeout(CheckRedis, 5000)
     }
   }catch(e){
     log.error(e);
     setTimeout(CheckRedis, 5000)
-  }
-}
-const CheckLocalQue = async()=>{
-  try{
-    let status = localQueStatus()
-    if(status){
-      StartServices()
-    }else{
-      setTimeout(CheckLocalQue, 5000)
-    }
-  }catch(e){
-    log.error(e);
-    setTimeout(CheckLocalQue, 5000)
   }
 }
 const CheckCommandMap = ()=>{
