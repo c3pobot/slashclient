@@ -1,6 +1,5 @@
 'use strict'
 const RedisCmd = require('./redis')
-const LocalQueCmd = require('./localQue')
 const Cmds = {}
 Cmds.getJobType = require('./getJobType')
 Cmds.getIntialResponse = require('./getIntialResponse')
