@@ -54,5 +54,5 @@ const handleRequest = async(req, res)=>{
   }
 }
 const server = app.listen(PORT, ()=>{
-  log.info(POD_NAME+' is listening on '+server.address().port)
+  log.info('slash-client is listening on '+server.address().port)
 })

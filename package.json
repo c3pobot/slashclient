@@ -5,7 +5,7 @@
     "express": "^4.18.2",
     "logger": "github:c3pobot/logger",
     "mongoapiclient": "github:c3pobot/mongoapiclient",
-    "node-fetch": "^2.6.7",
+    "node-fetch": "^2.6.12",
     "quewrapper": "github:c3pobot/quewrapper",
     "rediswrapper": "github:c3pobot/rediswrapper",
     "tweetnacl": "^1.0.3"
