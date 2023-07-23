@@ -1,9 +1,11 @@
 'use strict'
+const log = require('logger')
 const fetch = require('node-fetch')
 const path = require('path')
 const headers2get = ['x-ratelimit-bucket', 'x-ratelimit-limit', 'x-ratelimit-remaining', 'x-ratelimit-reset', 'x-ratelimit-reset-after']
 let discordUrl = process.env.DISCORD_PROXY || 'https://discord.com'
 discordUrl += '/api/webhooks/'+process.env.DISCORD_CLIENT_ID
+log.info('Using '+discordUrl+' for discordAPI calls...')
 const parseResponse = async(res)=>{
   try{
     if(!res) return

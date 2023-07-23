@@ -35,8 +35,10 @@ const handleRequest = async(req, res)=>{
     if(!(await isVerified(req.rawBody, req.header('X-Signature-Timestamp'), req.header('X-Signature-Ed25519'), PUBLIC_KEY))){
       res.status(401).end('invalid request signature')
     }else{
+
       if(ProcessCmds[req?.body?.type]){
-        const status = await ProcessCmds[req.body.type](req.body)
+
+        let status = await ProcessCmds[req.body.type](req.body)
         if(status?.type){
           res.status(200).json(status)
         }else{
@@ -47,6 +49,7 @@ const handleRequest = async(req, res)=>{
       }
     }
   }catch(e){
+    log.error(e)
     res.status(400).json({error: e.message || e})
   }
 }

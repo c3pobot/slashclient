@@ -3,12 +3,12 @@ const { autoCompleteData } = require('helpers/autoComplete')
 const FindObj = (array = [])=>{
   try{
     let returnObj
-    const tempObj = array.find(x=>x.focused && (autoCompleteData?.nameKeys[x.name] || autoCompleteData?.nameKeys[x.name?.split('-')[0]]))
+    let tempObj = array.find(x=>x.focused && (autoCompleteData?.nameKeys[x.name] || autoCompleteData?.nameKeys[x.name?.split('-')[0]]))
     if(tempObj){
       returnObj = tempObj
     }else{
-      const tempArray = array.find(x=>x.options)
-      if(tempArray && tempArray.options) returnObj = FindObj(tempArray.options)
+      let tempArray = array.find(x=>x.options)
+      if(tempArray?.options) returnObj = FindObj(tempArray.options)
     }
     return returnObj
   }catch(e){

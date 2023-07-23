@@ -23,8 +23,8 @@ const CheckCommandMap = ()=>{
     if(CmdMap?.map?.cmdCount > 0){
       StartServices()
     }else{
-    }
-    setTimeout(CheckCommandMap, 5000)
+      setTimeout(CheckCommandMap, 5000)
+    }    
   }catch(e){
     log.error(e);
     setTimeout(CheckCommandMap, 5000)
