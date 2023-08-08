@@ -3,6 +3,8 @@ const log = require('logger')
 const Queue = require('bull')
 const { v4: uuidv4 } = require('uuid')
 
+const createListeners = require('./createListeners')
+
 const USE_PRIVATE = process.env.USE_PRIVATE_WORKERS || false
 const POD_NAME = process.env.POD_NAME || 'bot-0'
 let workerTypes = ['discord', 'oauth', 'swgoh'], POD_NUM
