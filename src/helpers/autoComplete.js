@@ -7,7 +7,7 @@ let autoCompleteData = {
 }
 const updateNameKeys = async()=>{
   try{
-    const obj = (await mongo.find('autoComplete', {_id: 'nameKeys'}))[0]
+    let obj = (await mongo.find('autoComplete', {_id: 'nameKeys'}))[0]
     if(obj?.data) autoCompleteData.nameKeys = obj.data
   }catch(e){
     throw(e);
@@ -15,7 +15,7 @@ const updateNameKeys = async()=>{
 }
 const updateAutoObj = async()=>{
   try{
-    const obj = await mongo.find('autoComplete', {include: true}, {_id: 1, data: {name: 1, value: 1}})
+    let obj = await mongo.find('autoComplete', {include: true}, {_id: 1, data: {name: 1, value: 1}})
     if(obj.length > 0){
       let tempObj = {}
       for(let i in obj){

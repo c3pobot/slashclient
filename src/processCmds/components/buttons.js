@@ -1,5 +1,6 @@
 'use strict'
-const { getJobType, redis } = require('helpers')
+const redis = require('redisclient')
+const { getJobType } = require('helpers')
 const CmdQue = require('cmdQue')
 const AddButtonJob = async(obj, jobId)=>{
   try{

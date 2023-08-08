@@ -3,13 +3,13 @@ const log = require('logger')
 let workerTypes = ['discord', 'oauth', 'swgoh']
 if(process.env.WORKER_TYPES) workerTypes = JSON.parse(process.env.WORKER_TYPES)
 const mongo = require('mongoapiclient')
-let CmdMap = { map: {} }, mongoReady
+let CmdMap = { map: {} }
 const update = async(notify = false)=>{
   try{
     let tempMap = {}
     for(let i in workerTypes){
       if(notify) log.info('Add '+workerTypes[i]+' commands...')
-      const obj = (await mongo.find('slashCmds', {_id: workerTypes[i]}))[0]
+      let obj = (await mongo.find('slashCmds', {_id: workerTypes[i]}))[0]
       if(obj?.cmdMap) tempMap = {...tempMap,...obj.cmdMap}
     }
     let cmdCount = +Object.values(tempMap)?.length
