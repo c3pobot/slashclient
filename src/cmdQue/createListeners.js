@@ -2,7 +2,7 @@ const log = require('logger')
 
 module.exports = (que, queName)=>{
   try{
-    log.info(`Creating listers for ${QUE_NAME} command que...`)
+    log.info(`Creating listers for ${queName} command que...`)
     que.on('global:failed', function (jobId, err) {
 			log.error(`Job ${jobId} failed with reason: ${err}`)
 			// A job failed with reason `err`!
