@@ -14,7 +14,6 @@ const CheckRedis = ()=>{
   try{
     let status = redis.status()
     if(status){
-      console.log(status)
       CheckMongo()
       return
     }
@@ -41,6 +40,7 @@ const CheckCommandMap = ()=>{
   try{
     if(CmdMap?.map?.cmdCount > 0){
       StartServices()
+      return
     }
     setTimeout(CheckCommandMap, 5000)
   }catch(e){
