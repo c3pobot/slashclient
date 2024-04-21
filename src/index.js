@@ -1,14 +1,14 @@
 'use strict'
 const log = require('logger')
-const redis = require('redisclient')
-const mongo = require('mongoapiclient')
-
 let logLevel = process.env.LOG_LEVEL || log.Level.INFO;
 log.setLevel(logLevel);
 
-const { CmdMap } = require('./helpers/cmdMap')
+const redis = require('redisclient')
+const mongo = require('mongoapiclient')
 
-const CmdQue = require('./cmdQue')
+const rabbitmq = require('./helpers/rabbitmq')
+const mqtt = require('./helpers/mqtt')
+const { CmdMap } = require('./helpers/cmdMap')
 
 const CheckRedis = ()=>{
   try{
@@ -39,22 +39,13 @@ const CheckMongo = ()=>{
 const CheckCommandMap = ()=>{
   try{
     if(CmdMap?.map?.cmdCount > 0){
-      StartServices()
+      require('./server')
       return
     }
     setTimeout(CheckCommandMap, 5000)
   }catch(e){
     log.error(e);
     setTimeout(CheckCommandMap, 5000)
-  }
-}
-const StartServices = async()=>{
-  try{
-    await CmdQue.start()
-    require('./server')
-  }catch(e){
-    log.error(e)
-    setTimeout(StartServices, 5000)
   }
 }
 

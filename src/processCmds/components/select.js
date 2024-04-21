@@ -1,30 +1,24 @@
 'use strict'
 const redis = require('redisclient')
-const { getJobType } = require('helpers')
-const CmdQue = require('cmdQue')
-const AddJob = async(obj)=>{
-  try{
-    const type = await getJobType(obj)
-    await redis.del('component-'+obj.id)
-    if(type) CmdQue.add(type, obj)
-  }catch(e){
-    throw(e)
-  }
+const rabbitmq = require('src/helpers/rabbitmq')
+const { CmdMap } = require('src/helpers/cmdMap')
+const addJob = async(obj = {})=>{
+  await redis.del('component-'+obj.id)
+  let queName = CmdMap?.map[obj?.data?.name]?.worker
+  if(!queName) return
+  await rabbitmq.add(queName, obj)
 }
 module.exports = async(req)=>{
-  try{
-    if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return {type: 6}
-    const opt = JSON.parse(req.data?.custom_id)
-    if(!opt?.id) return {type: 6, data: { content: 'Error with selection', components: []}}
-    const tempObj = await redis.get('component-'+opt.id)
-    if(!tempObj?.member?.user?.id) return {type: 7, data: { content: 'Command timed out', components: []}}
-    if(tempObj.member.user.id == req.member.user.id){
-      tempObj.token = req.token
-      tempObj.select = {opt: opt, data: req.data.values || []}
-      await AddJob(tempObj)
-    }
-    return {type: 6}
-  }catch(e){
-    throw(e)
-  }
+  if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return { type: 6 }
+  let opt = JSON.parse(req.data?.custom_id)
+  if(!opt?.id) return {type: 6, data: { content: 'Error with selection', components: []}}
+
+  let tempObj = await redis.get('component-'+opt.id)
+  if(!tempObj || !tempObj?.member?.user?.id) return { type: 7, data: { content: 'Command timed out', components: []} }
+  if(tempObj.member.user.id !== req.member?.user?.id) return { type: 6 }
+
+  tempObj.token = req.token
+  tempObj.select = { opt: opt, data: req.data.values || [] }
+  await addJob(tempObj)
+  return { type: 6 }
 }

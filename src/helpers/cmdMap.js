@@ -1,26 +1,22 @@
 'use strict'
 const log = require('logger')
+const mongo = require('mongoapiclient')
 let workerTypes = ['discord', 'oauth', 'swgoh']
 if(process.env.WORKER_TYPES) workerTypes = JSON.parse(process.env.WORKER_TYPES)
-const mongo = require('mongoapiclient')
 let CmdMap = { map: {} }
 const update = async(notify = false)=>{
-  try{
-    let tempMap = {}
-    for(let i in workerTypes){
-      if(notify) log.info('Add '+workerTypes[i]+' commands...')
-      let obj = (await mongo.find('slashCmds', {_id: workerTypes[i]}))[0]
-      if(obj?.cmdMap) tempMap = {...tempMap,...obj.cmdMap}
-    }
-    let cmdCount = +Object.values(tempMap)?.length
-    if(cmdCount > 0){
-      tempMap.cmdCount = cmdCount
-      CmdMap.map = tempMap
-      if(notify) log.info('Saving map to CmdMap')
-      return true
-    }
-  }catch(e){
-    throw(e);
+  let tempMap = {}
+  for(let i in workerTypes){
+    if(notify) log.info('Add '+workerTypes[i]+' commands...')
+    let obj = (await mongo.find('slashCmds', {_id: workerTypes[i]}))[0]
+    if(obj?.cmdMap) tempMap = {...tempMap,...obj.cmdMap}
+  }
+  let cmdCount = +Object.values(tempMap)?.length
+  if(cmdCount > 0){
+    tempMap.cmdCount = cmdCount
+    CmdMap.map = tempMap
+    if(notify) log.info('Saving map to CmdMap')
+    return true
   }
 }
 const syncMap = async(notify = false)=>{
