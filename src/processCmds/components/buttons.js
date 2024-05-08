@@ -1,6 +1,6 @@
 'use strict'
 const redis = require('redisclient')
-const rabbitmq = require('src/helpers/rabbitmq')
+const cmdQue = require('src/cmdQue')
 const { CmdMap } = require('src/helpers/cmdMap')
 
 const addButtonJob = async(obj = {})=>{
@@ -8,13 +8,13 @@ const addButtonJob = async(obj = {})=>{
   await redis.del('button-'+obj.id)
   let queName = CmdMap?.map[obj?.data?.name]?.worker
   if(!queName) return
-  await rabbitmq.add(queName, obj)
+  await cmdQue.add(queName, obj)
 }
 const addMiscJob = async(obj = {})=>{
   let queName = CmdMap?.map[obj?.data?.name]?.worker
   if(!queName) return
 
-  await rabbitmq.add(queName, obj)
+  await cmdQue.add(queName, obj)
 }
 const miscCmds = new Set(['pollvote'])
 module.exports = async(req = {})=>{

@@ -1,6 +1,6 @@
 'use strict'
 const log = require('logger')
-const mongo = require('mongoapiclient')
+const mongo = require('mongoclient')
 let botSettings = { }, mongoReady = mongo.status(), notify = true
 const getSettings = async()=>{
   let data = (await mongo.find('botSettings', {_id: 1}, {_id: 0, TTL: 0}))[0]

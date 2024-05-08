@@ -1,52 +1,69 @@
 'use strict'
 const log = require('logger')
 let logLevel = process.env.LOG_LEVEL || log.Level.INFO;
-log.setLevel(logLevel);
+log.setLevel('debug');
 
+const POD_NAME = process.env.POD_NAME || 'slash-client'
 const redis = require('redisclient')
-const mongo = require('mongoapiclient')
+const mongo = require('mongoclient')
 
 const rabbitmq = require('./helpers/rabbitmq')
-const mqtt = require('./helpers/mqtt')
 const { CmdMap } = require('./helpers/cmdMap')
+const cmdQue = require('./cmdQue')
 
-const CheckRedis = ()=>{
-  try{
-    let status = redis.status()
-    if(status){
-      CheckMongo()
-      return
-    }
-    setTimeout(CheckRedis, 5000)
-  }catch(e){
-    log.error(e)
-    setTimeout(CheckRedis, 5000)
+require('./exchanges')
+
+const checkRabbitmq = ()=>{
+  log.debug(`${POD_NAME} rabbitmq startup check...`)
+  if(rabbitmq.ready){
+    checkRedis()
+    return
   }
+  setTimeout(checkRabbitmq, 5000)
 }
-const CheckMongo = ()=>{
-  try{
-    let status = mongo.status()
-    if(status){
-      CheckCommandMap()
-      return
-    }
-    setTimeout(CheckMongo, 5000)
-  }catch(e){
-    log.error(e)
-    setTimeout(CheckMongo, 5000)
+const checkRedis = ()=>{
+  log.debug(`${POD_NAME} redis startup check...`)
+  let status = redis.status()
+  if(status){
+    checkMongo()
+    return
   }
+  setTimeout(checkRedis, 5000)
 }
-const CheckCommandMap = ()=>{
+const checkMongo = ()=>{
+  log.debug(`${POD_NAME} mongo startup check...`)
+  let status = mongo.status()
+  if(status){
+    checkCommandMap()
+    return
+  }
+  setTimeout(checkMongo, 5000)
+}
+const checkCommandMap = ()=>{
   try{
+    log.debug(`${POD_NAME} cmdMap startup check...`)
     if(CmdMap?.map?.cmdCount > 0){
+      checkCmdQue()
+      return
+    }
+    setTimeout(checkCommandMap, 5000)
+  }catch(e){
+    log.error(e);
+    setTimeout(checkCommandMap, 5000)
+  }
+}
+const checkCmdQue = async()=>{
+  try{
+    log.debug(`${POD_NAME} cmdQue startup check...`)
+    let status = await cmdQue.start()
+    if(status){
       require('./server')
       return
     }
-    setTimeout(CheckCommandMap, 5000)
+    setTimeout(checkCmdQue, 5000)
   }catch(e){
-    log.error(e);
-    setTimeout(CheckCommandMap, 5000)
+    log.error(e)
+    setTimeout(checkCmdQue, 5000)
   }
 }
-
-CheckRedis()
+checkRabbitmq()

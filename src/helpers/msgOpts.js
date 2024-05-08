@@ -1,6 +1,6 @@
 'use strict'
 const log = require('logger')
-const mongo = require('mongoapiclient')
+const mongo = require('mongoclient')
 const { botSettings } = require('./botSettings')
 let msgOpts = { private: new Set([]), basic: new Set([]), vip: new Set([]) }
 const updateVip = async()=>{
@@ -28,5 +28,18 @@ const update = async(notify = false)=>{
     setTimeout(()=>update(notify), 5000)
   }
 }
-update(true)
+const start = ()=>{
+  try{
+    let status = mongo.status()
+    if(status){
+      update(true)
+      return
+    }
+    setTimeout(start, 5000)
+  }catch(e){
+    log.error(e)
+    setTimeout(start, 5000)
+  }
+}
+start()
 module.exports = { msgOpts }

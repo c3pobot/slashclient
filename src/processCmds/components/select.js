@@ -1,12 +1,12 @@
 'use strict'
 const redis = require('redisclient')
-const rabbitmq = require('src/helpers/rabbitmq')
+const cmdQue = require('src/cmdQue')
 const { CmdMap } = require('src/helpers/cmdMap')
 const addJob = async(obj = {})=>{
   await redis.del('component-'+obj.id)
   let queName = CmdMap?.map[obj?.data?.name]?.worker
   if(!queName) return
-  await rabbitmq.add(queName, obj)
+  await cmdQue.add(queName, obj)
 }
 module.exports = async(req)=>{
   if(!req?.data || !req?.member?.user?.id || !req?.data?.custom_id) return { type: 6 }

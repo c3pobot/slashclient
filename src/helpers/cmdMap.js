@@ -1,6 +1,6 @@
 'use strict'
 const log = require('logger')
-const mongo = require('mongoapiclient')
+const mongo = require('mongoclient')
 let workerTypes = ['discord', 'oauth', 'swgoh']
 if(process.env.WORKER_TYPES) workerTypes = JSON.parse(process.env.WORKER_TYPES)
 let CmdMap = { map: {} }
@@ -35,5 +35,18 @@ const syncMap = async(notify = false)=>{
     setTimeout(()=>syncMap(notify), 5000)
   }
 }
-syncMap(true)
+const start = ()=>{
+  try{
+    let status = mongo.status()
+    if(status){
+      syncMap(true)
+      return
+    }
+    setTimeout(start, 5000)
+  }catch(e){
+    log.error(e)
+    setTimeout(start, 5000)
+  }
+}
+start()
 module.exports = { CmdMap }

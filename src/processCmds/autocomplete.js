@@ -1,8 +1,8 @@
 'use strict'
-const { autoCompleteData } = require('src/helpers/autoComplete')
+const { dataList } = require('src/helpers/dataList')
 const findObj = (array = [])=>{
   let returnObj
-  let tempObj = array.find(x=>x.focused && (autoCompleteData?.nameKeys[x.name] || autoCompleteData?.nameKeys[x.name?.split('-')[0]]))
+  let tempObj = array.find(x=>x.focused && (dataList?.nameKeys[x.name] || dataList?.nameKeys[x.name?.split('-')[0]]))
   if(tempObj) return tempObj;
 
   let tempArray = array.find(x=>x.options)
@@ -14,11 +14,11 @@ module.exports = (req = {})=>{
 
   let tempCmd = findObj(req.data.options)
   if(!tempCmd?.name) return
-  let key = autoCompleteData?.nameKeys[tempCmd.name]
-  if(!key) key = autoCompleteData?.nameKeys[tempCmd.name.split('-')[0]]
+  let key = dataList?.nameKeys[tempCmd.name]
+  if(!key) key = dataList?.nameKeys[tempCmd.name.split('-')[0]]
   if(!key) return
 
-  let returnArray = autoCompleteData?.autoObj[key]?.filter(x=>x.name.toLowerCase().includes(tempCmd.value.toLowerCase())) || []
+  let returnArray = dataList?.autoObj[key]?.filter(x=>x.name.toLowerCase().includes(tempCmd.value.toLowerCase())) || []
   if(!returnArray || returnArray?.length == 0) return
 
   return { type: 8, data: { choices: returnArray }}

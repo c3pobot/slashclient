@@ -5,6 +5,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const compression = require('compression');
 const processCmds = require('./processCmds')
+const mongo = require('mongoclient')
 const POD_NAME = process.env.POD_NAME || 'slash-client'
 const app = express()
 const PORT = process.env.PORT || 3000
